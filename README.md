@@ -116,6 +116,9 @@ On connection, the server first sends all stored messages matching the filters, 
 > **Note:** Clients must clear previously received data on reconnect — messages may be re-delivered from history.
 
 **Example (Python):**
+
+> **Note:** This example uses the `websockets` library (`pip install websockets`), which is not included in server dependencies but is useful for client scripts.
+
 ```python
 import asyncio
 import websockets

@@ -148,10 +148,9 @@ async def mqtt_loop() -> None:
                 MQTT_RECONNECT_DELAY_SECONDS,
             )
             await asyncio.sleep(MQTT_RECONNECT_DELAY_SECONDS)
-        except Exception as exc:  # noqa: BLE001
-            logger.error(
-                "Unexpected error in MQTT loop: %s. Reconnecting in %ds …",
-                exc,
+        except Exception:  # noqa: BLE001
+            logger.exception(
+                "Unexpected error in MQTT loop. Reconnecting in %ds …",
                 MQTT_RECONNECT_DELAY_SECONDS,
             )
             await asyncio.sleep(MQTT_RECONNECT_DELAY_SECONDS)
@@ -188,8 +187,8 @@ async def cleanup_task() -> None:
         await asyncio.sleep(CLEANUP_INTERVAL_SECONDS)
         try:
             await cleanup_old_messages(db)
-        except Exception as exc:  # noqa: BLE001
-            logger.error("Error during cleanup: %s", exc)
+        except Exception:  # noqa: BLE001
+            logger.exception("Error during cleanup")
 
 
 # ---------------------------------------------------------------------------
@@ -320,8 +319,8 @@ async def tail_websocket(websocket: WebSocket, sources: str | None = None, since
             await websocket.send_json(msg)
     except WebSocketDisconnect:
         pass
-    except Exception as exc:  # noqa: BLE001
-        logger.debug("WebSocket error: %s", exc)
+    except Exception:  # noqa: BLE001
+        logger.exception("WebSocket error")
     finally:
         ws_queues.remove(q)
 
